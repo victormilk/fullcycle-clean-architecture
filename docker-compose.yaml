@@ -10,7 +10,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ../.docker/mysql:/var/lib/mysql
+      - .docker/mysql:/var/lib/mysql
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -22,3 +22,25 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+
+  migrate:
+    image: migrate/migrate
+    volumes:
+      - ./sql/migrations:/migrations
+    command: -path=migrations -database "mysql://root:root@tcp(mysql:3306)/orders" up
+    depends_on:
+      - mysql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    restart: always
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+      - "8000:8000"
+    depends_on:
+      - mysql
+      - rabbitmq

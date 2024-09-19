@@ -4,8 +4,7 @@
   "name": "FullCycle Clean architecture",
   "service": "devcontainer",
   "dockerComposeFile": [
-    "docker-compose.yaml",
-    "../docker-compose.yaml"
+    "docker-compose.yaml"
   ],
   "containerUser": "root",
   "remoteUser": "root",

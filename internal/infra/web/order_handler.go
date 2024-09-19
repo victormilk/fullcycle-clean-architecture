@@ -49,6 +49,7 @@ func (h *WebOrderHandler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *WebOrderHandler) List(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	listOrders := usecase.NewListOrdersUseCase(h.OrderRepository)
 	output, err := listOrders.Execute()
 	if err != nil {
